@@ -153,6 +153,14 @@ SELECT
 FROM
   `customer_data.customer_purchase`
 
+
+SELECT DISTINCT customer_id
+FROM
+invoice
+ORDER BY
+invoice_id
+
+
 SELECT
   customer_id,
   CASE
@@ -161,10 +169,3 @@ SELECT
     END AS cleaned_name
   FROM
     customer_data.customer_name
-
-
-SELECT DISTINCT customer_id
-FROM
-invoice
-ORDER BY
-invoice_id
