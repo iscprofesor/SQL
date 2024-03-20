@@ -178,3 +178,11 @@ FROM
     invoices
 WHERE 
     BillingCountry = 'Germany' AND Total > 5;
+
+
+SELECT 
+    * 
+FROM 
+    customer
+WHERE 
+    country = 'Brazil'
