@@ -186,3 +186,28 @@ FROM
     customer
 WHERE 
     country = 'Brazil'
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+SELECT *
+FROM `movie_data.movies `
+ORDER BY Fecha_de_estreno DESC
+
+SELECT *
+FROM `movie_data.movies `
+WHERE G__nero = 'Comedia'
+ORDER BY Fecha_de_estreno DESC
+
+SELECT *
+FROM `movie_data.movies `
+WHERE G__nero = 'Comedia' AND Ingresos > 300000000
+ORDER BY Fecha_de_estreno DESC
+
+SELECT Name
+FROM Genres
+ORDER BY Name
+
+SELECT *
+FROM Tracks
+WHERE Composer = 'Chris Cornell'
+ORDER BY GenreId DESC
