@@ -239,3 +239,118 @@ GROUP BY
 ORDER BY
   num_trips DESC
 LIMIT 10
+
+SELECT
+*
+FROM
+  tableA
+LEFT JOIN
+  tableB
+ON
+  keyA = keyB
+
+SELECT
+*
+FROM
+  tableB
+RIGHT JOIN
+  tableA
+ON
+  keyA = keyB
+
+SELECT
+  employees.name AS employee_name,
+  employees.role AS employee_role,
+  departments.name AS department_name
+FROM
+  employee_data.employees
+INNER JOIN
+  employee_data.departments ON
+  employees.department_id = departments.department_id
+
+SELECT
+  employees.name AS employee_name,
+  employees.role AS employee_role,
+  departments.name AS department_name
+FROM
+  employees
+INNER JOIN
+  departments ON
+  employees.department_id = departments.department_id
+
+/// La query anterior la modifique de la siguiente manera y funciono.
+SELECT
+  e.name, e.role, d.name
+FROM
+  `my-data-project12345-413801.employee_data.employees` AS e
+INNER JOIN
+  `my-data-project12345-413801.employee_data.departments` AS d
+ON
+  e.department_id = d.department_id
+
+SELECT
+  e.name, e.role, d.name
+FROM
+  `my-data-project12345-413801.employee_data.employees` AS e
+LEFT JOIN
+  `my-data-project12345-413801.employee_data.departments` AS d
+ON
+  e.department_id = d.department_id
+
+SELECT
+  e.name, e.role, d.name
+FROM
+  `my-data-project12345-413801.employee_data.employees` AS e
+RIGHT JOIN
+  `my-data-project12345-413801.employee_data.departments` AS d
+ON
+  e.department_id = d.department_id
+
+SELECT
+  e.name, e.role, d.name
+FROM
+  `my-data-project12345-413801.employee_data.employees` AS e
+FULL OUTER JOIN
+  `my-data-project12345-413801.employee_data.departments` AS d
+ON
+  e.department_id = d.department_id
+
+-- Let's say table_1 has 100 rows and table_2 has 10 rows.
+-- They share 10 keys in common.
+
+-- Using INNER JOIN --> We get 10 rows in our results.
+SELECT
+    COUNT(*)
+FROM
+    table_1
+INNER JOIN
+    table_2
+ON table_1.key = table_2.key;
+
+-- Using LEFT JOIN --> We get 100 rows in our results.
+SELECT
+    COUNT(*)
+FROM
+    table_1
+LEFT JOIN
+    table_2
+ON table_1.key = table_2.key;
+
+SELECT
+ seasons.market AS university,
+ seasons.name AS team_name,
+ seasons.wins,
+ seasons.losses,
+ seasons.ties,
+ mascots.mascot AS team_mascot
+FROM
+ `bigquery-public-data.ncaa_basketball.mbb_historical_teams_seasons` AS seasons
+LEFT JOIN
+ `bigquery-public-data.ncaa_basketball.mascots` AS mascots
+ON
+ seasons.team_id = mascots.id
+WHERE
+ seasons.season = 1984
+ AND seasons.division = 1
+ORDER BY
+ seasons.market
