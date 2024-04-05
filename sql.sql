@@ -458,3 +458,21 @@ GROUP BY
   warehouse.alias_dep__sito
 HAVING
   COUNT(Orders.id_pedido) > 0
+
+
+SELECT account_table.*
+  FROM(
+        SELECT *
+          FROM transaction.sf_model_feature_2014_01
+        WHERE day_of_week = 'Friday'
+      ) account_table.availability = 'YES'
+
+Existen algunas reglas que deben seguir las subconsultas:
+
+Las subconsultas tienen que estar dentro de paréntesis
+
+Una subconsulta puede tener una sola columna especificada en la cláusula SELECT. Si quieres que una subconsulta compare varias columnas, esas columnas deben haberse seleccionado en la consulta principal.
+
+Las subconsultas que devuelven más de una fila solo pueden usarse con múltiples operadores de valor, tales como el operador IN que permite especificar múltiples valores en una cláusula WHERE.
+
+Una subconsulta no puede estar anidada en un comando SET. El comando SET se usa con UPDATE para especificar qué columnas (y valores) se deben actualizar en una tabla.
