@@ -354,3 +354,33 @@ WHERE
  AND seasons.division = 1
 ORDER BY
  seasons.market
+
+
+SELECT
+  station_id,
+  num_bikes_available,
+  (SELECT
+    AVG(num_bikes_available)
+  FROM `bigquery-public-data.new_york.citibike_stations`) AS avg_num_bikes_available
+FROM
+  `bigquery-public-data.new_york.citibike_stations`
+
+SELECT
+  station_id,
+  name,
+  number_of_rides AS number_of_rides_starting_at_station
+FROM
+  (
+    SELECT
+      start_station_id,
+      COUNT(*) number_of_rides
+    FROM
+      `bigquery-public-data.new_york.citibike_trips`
+      GROUP BY
+        start_station_id
+  )
+  AS station_num_trips
+  INNER JOIN
+  `bigquery-public-data.new_york.citibike_stations` ON station_id = cast(start_station_id as string)
+  ORDER BY
+    number_of_rides DESC
