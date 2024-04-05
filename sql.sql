@@ -402,3 +402,31 @@ WHERE
     WHERE
       usertype = 'Subscriber'  
   )
+
+
+SELECT 
+  Warehouse.warehouse_id,
+  CONCAT(Warehouse.state, ': ', Warehouse.warehouse_alias) AS warehouse_name,
+  COUNT(Orders.order_id) AS number_of_orders,
+  (SELECT
+    COUNT(*)
+    FROM warehouse_orders.Orders Orders
+    AS total_orders,
+    CASE
+      WHEN COUNT(Orders.order_id) / (SELECT COUNT(*) FROM warehouse_orders.Orders Orders) <= 0.20)
+      THEN "fulfilled 0-20% od Orders"
+      WHEN COUNT(Orders.order_id) / (SELECT COUNT(*) FROM warehouse_orders.Orders Orders) > 0.20)
+      AND COUNT(Orders.order_id) / (SELECT COUNT(*) FROM warehouse_orders.Orders Orders) <= 0.60)
+      THEN "fulfilled 21-60% od Orders"
+    ELSE "fulfilled more than 60% od Orders"
+    END AS fulfillment_summary
+FROM 
+  `my-data-project12345-413801.warehouse_orders.Warehouse` Warehouse
+LEFT JOIN
+  `my-data-project12345-413801.warehouse_orders.Orders ` Orders
+  ON Orders.warehouse_id = Warehouse.warehouse_id
+GROUP BY
+  Warehouse.warehouse_id,
+  warehouse.name
+HAVING
+  COUNT(Orders.order_id) > 0
