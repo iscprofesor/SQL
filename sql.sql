@@ -410,7 +410,7 @@ SELECT
   COUNT(Orders.order_id) AS number_of_orders,
   (SELECT
     COUNT(*)
-    FROM warehouse_orders.Orders Orders
+    FROM warehouse_orders.Orders Orders)
     AS total_orders,
     CASE
       WHEN COUNT(Orders.order_id) / (SELECT COUNT(*) FROM warehouse_orders.Orders Orders) <= 0.20)
@@ -430,3 +430,31 @@ GROUP BY
   warehouse.name
 HAVING
   COUNT(Orders.order_id) > 0
+
+SELECT 
+  Warehouse.id_dep__sito,
+  CONCAT(Warehouse.estado, ': ', Warehouse.alias_dep__sito) AS warehouse_name,
+  COUNT(Orders.id_pedido) AS number_of_orders,
+  (SELECT
+    COUNT(*)
+    FROM `my-data-project12345-413801.warehouse_orders.Orders ` Orders)
+    AS total_orders,
+    CASE
+      WHEN COUNT(Orders.id_pedido) / (SELECT COUNT(*) FROM `my-data-project12345-413801.warehouse_orders.Orders ` Orders) <= 0.20
+      THEN "fulfilled 0-20% od Orders"
+      WHEN COUNT(Orders.id_pedido) / (SELECT COUNT(*) FROM `my-data-project12345-413801.warehouse_orders.Orders ` Orders) > 0.20
+      AND COUNT(Orders.id_pedido) / (SELECT COUNT(*) FROM `my-data-project12345-413801.warehouse_orders.Orders ` Orders) <= 0.60
+      THEN "fulfilled 21-60% od Orders"
+    ELSE "fulfilled more than 60% od Orders"
+    END AS fulfillment_summary
+FROM 
+  `my-data-project12345-413801.warehouse_orders.Warehouse` Warehouse
+LEFT JOIN
+  `my-data-project12345-413801.warehouse_orders.Orders ` Orders
+  ON Orders.id_dep___sito = Warehouse.id_dep__sito
+GROUP BY
+  Warehouse.id_dep__sito,
+  warehouse.estado,
+  warehouse.alias_dep__sito
+HAVING
+  COUNT(Orders.id_pedido) > 0
