@@ -365,6 +365,7 @@ SELECT
 FROM
   `bigquery-public-data.new_york.citibike_stations`
 
+
 SELECT
   station_id,
   name,
@@ -384,3 +385,20 @@ FROM
   `bigquery-public-data.new_york.citibike_stations` ON station_id = cast(start_station_id as string)
   ORDER BY
     number_of_rides DESC
+
+
+SELECT
+  station_id,
+  name
+FROM
+  `bigquery-public-data.new_york.citibike_stations`
+WHERE
+  station_id IN
+  (
+    SELECT
+      CAST(start_station_id as STRING)
+    FROM
+      `bigquery-public-data.new_york.citibike_trips`
+    WHERE
+      usertype = 'Subscriber'  
+  )
