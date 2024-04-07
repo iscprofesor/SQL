@@ -476,3 +476,33 @@ Una subconsulta puede tener una sola columna especificada en la cláusula SELECT
 Las subconsultas que devuelven más de una fila solo pueden usarse con múltiples operadores de valor, tales como el operador IN que permite especificar múltiples valores en una cláusula WHERE.
 
 Una subconsulta no puede estar anidada en un comando SET. El comando SET se usa con UPDATE para especificar qué columnas (y valores) se deben actualizar en una tabla.
+
+SELECT
+  Date,
+  Region,
+  Small_Bags,
+  Large_Bags,
+  XLarge_Bags,
+  Total_Bags,
+  Small_Bags + Large_Bags + XLarge_Bags AS Total_Bags_Calc
+FROM `my-data-project12345-413801.avocado_data.avocado_prices`
+
+SELECT
+  Date,
+  Region,  
+  Total_Bags,
+  Small_Bags,
+  (Small_Bags / Total_Bags) * 100 AS Small_Bags_Percent
+FROM `my-data-project12345-413801.avocado_data.avocado_prices`
+WHERE
+  Total_Bags != 0
+
+SELECT
+  EXTRACT(YEAR FROM STARTTIME) AS year,
+  COUNT(*) AS number_of_rides
+FROM 
+  `bigquery-public-data.new_york.citibike_trips`
+GROUP BY
+  year
+ORDER BY
+  year
