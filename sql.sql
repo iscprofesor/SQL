@@ -536,3 +536,21 @@ unit_price * quantity AS total_partida
 FROM
 invoice_item 
 LIMIT 5
+
+
+SELECT 
+  MIN(Date) AS min_date, 
+  MAX(Date) AS max_date
+FROM 
+  `my-data-project12345-413801.sales. sales_info`
+
+
+SELECT 
+  EXTRACT(YEAR FROM date) AS Year, 
+  EXTRACT(MONTH FROM date) AS Month, 
+  ProductId, 
+  ROUND(MAX(UnitPrice),2) AS UnitPrice, 
+  SUM(Quantity) AS UnitsSold 
+FROM `my-data-project12345-413801.sales. sales_info` 
+  GROUP BY Year, Month, ProductId 
+  ORDER BY Year, Month, ProductId;
