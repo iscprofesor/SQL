@@ -554,3 +554,51 @@ SELECT
 FROM `my-data-project12345-413801.sales. sales_info` 
   GROUP BY Year, Month, ProductId 
   ORDER BY Year, Month, ProductId;
+
+///////////////////////////// tabla temporal
+WITH trips_over_1_hr AS (
+  SELECT *
+  FROM
+    `bigquery-public-data.new_york.citibike_trips`
+  WHERE
+    tripduration >= 60
+)  
+
+## Count haw many trips are 60+ minutes long
+
+
+SELECT
+  COUNT(*) AS cnt
+FROM
+  trips_over_1_hr
+/////////////////////////////////
+
+WITH longest_used_bike AS (
+  SELECT 
+    bike_id,
+    SUM(duration_minutes) AS trip_duration
+  FROM
+    `bigquery-public-data.austin_bikeshare.bikeshare_trips`
+  GROUP BY
+    bike_id
+  ORDER BY
+    trip_duration DESC
+  LIMIT 1
+)  
+
+## Find the station at which longest bikeshared ride started
+
+
+SELECT
+  trips.start_station_id,
+  COUNT(*) AS trip_ct
+FROM
+  longest_used_bike AS longest
+FULL JOIN
+  `bigquery-public-data.austin_bikeshare.bikeshare_trips` AS trips
+ON longest.bike_id = trips.bike_id
+GROUP BY
+  trips.start_station_id
+ORDER BY
+  trip_ct DESC
+LIMIT 1
